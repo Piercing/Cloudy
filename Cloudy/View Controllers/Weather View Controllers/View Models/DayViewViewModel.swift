@@ -9,7 +9,7 @@
 import UIKit
 
 // NOTA 1: "DayViewViewModel" --> es una struct, un "value type" (tipo de valor).
-// Recordar que el VM debe mantener una referencia al modelo, lo que significa
+// Recordar que el "VM" debe mantener una referencia al modelo, lo que significa
 // que tenemos que crear una propiedad para ello.
 
 struct DayViewViewModel {
@@ -25,7 +25,7 @@ struct DayViewViewModel {
     // NOTA 2:el siguiente paso es mover el código ubicado en el método
     // "updateWeatherDataContainer(withWeatherData:)"  de la clase -->
     // -->"DayViewController" hasta aquí, el VM, ya que lo necesitamos
-    // para centrarnos en los valores que son usados para poblar la UI.
+    // para centrarnos en los valores que son usados para poblar la UI. ===>>> ¡¡¡PENDIENTE VER SI HE HACE!!!
     
     
     // NOTA 3: vamos a empezar con la etiqueta "date", la cual espera
@@ -47,15 +47,15 @@ struct DayViewViewModel {
     
     // NOTA 4: La etiqueta "time" se crea como la anterior, "date".
     
-    // Sin embargo hay una complicación, el formato del tiempo depende
+    // Sin embargo hay una  complicación, el formato  del tiempo depende
     // de la configuración del usuario en la aplicación. Para resolverlo
     // vamos hasta la carpeta "Extensions" --> "UserDefaults" y añadimos
-    // una propiedad calculada --> "timeFormat" dentro de la enun "TimeNotation"
-    // en la pare de arriba, la cual nos devolverá el formato de fecha correcto
+    // una propiedad calculada timeFormat dentro de la enum TimeNotation
+    // en la parte de arriba, que nos devuelve el formato fecha correcto
     // en función de las propiedades del usuario.
     
-    // Una vez hecha la propiedad computada en "userDefaults"
-    // podemos actualizar la propiedad "time".
+    // Una vez hecha la propiedad computada en -->"userDefaults" podemos
+    // actualizar la propiedad "time".
     
     var time: String {
         
@@ -110,7 +110,7 @@ struct DayViewViewModel {
     /* NOTA 5: Para el Icon Image View, necesitamos una imagen
      Podríamos poner esta lógica en el view model, sin embargo
      necesitamos la misma lógica más tarde en el VModel del VC
-     de la semana (week), por tanto, es mejor crear una extensión
+     de la semana (week), por tanto, mejor crear una extensión
      para UIImage en el que pondremos esa lógica. Creamos pues,
      un nuevo archivo en la carpeta "Extensions" con el nombre
      "UIImage.swift". Una vez creada la extensión creamos la

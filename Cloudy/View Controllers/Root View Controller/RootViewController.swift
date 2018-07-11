@@ -152,8 +152,15 @@ class RootViewController: UIViewController {
             if let error = error {
                 print(error)
             } else if let response = response {
-                // Configure Day View Controller
-                self.dayViewController.now = response
+                
+                // Configure Day View Controller.
+                
+                // Creamos aquí  una instancia de la struct ->"DayViewViewModel" y
+                // lo asignamos a la propiedad "viewmodel" del view controller day.
+                
+                // Con esto el controlador day ya no tiene acceso directo a "WeatherData".
+                // Sólo se puede acceder al modelo de forma indierecta a través del "VM".
+                self.dayViewController.viewModel = DayViewViewModel(weatherData: response)
 
                 // Configure Week View Controller
                 self.weekViewController.week = response.dailyData

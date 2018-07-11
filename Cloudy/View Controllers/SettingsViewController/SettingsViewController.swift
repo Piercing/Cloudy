@@ -2,8 +2,8 @@
 //  SettingsViewController.swift
 //  Cloudy
 //
-//  Created by Bart Jacobs on 03/10/16.
-//  Copyright © 2016 Cocoacasts. All rights reserved.
+//  Created by Piercing on 10/7/18.
+//  Copyright © 2018 devspain. All rights reserved.
 //
 
 import UIKit
