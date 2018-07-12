@@ -33,6 +33,7 @@
 		CC89B4521D9FECBE006BFD6E /* WeatherDayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC89B4511D9FECBE006BFD6E /* WeatherDayData.swift */; };
 		D518869C20F566350048DCEF /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D518869B20F566350048DCEF /* UIImage.swift */; };
 		D59A25B520F53A1D007F21CA /* DayViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59A25B420F53A1D007F21CA /* DayViewViewModel.swift */; };
+		D5A225AB20F7E2D700AF2394 /* WeekViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A225AA20F7E2D700AF2394 /* WeekViewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		CC89B4511D9FECBE006BFD6E /* WeatherDayData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherDayData.swift; sourceTree = "<group>"; };
 		D518869B20F566350048DCEF /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		D59A25B420F53A1D007F21CA /* DayViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewViewModel.swift; sourceTree = "<group>"; };
+		D5A225AA20F7E2D700AF2394 /* WeekViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = WeekViewViewModel.swift; sourceTree = "<group>"; wrapsLines = 1; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				D59A25B420F53A1D007F21CA /* DayViewViewModel.swift */,
+				D5A225AA20F7E2D700AF2394 /* WeekViewViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				CC7854CD1D9FF99700E7836D /* WeatherViewController.swift in Sources */,
 				CC83E0D51F13BF3B00EB0CAC /* LocationsViewController.swift in Sources */,
 				D59A25B520F53A1D007F21CA /* DayViewViewModel.swift in Sources */,
+				D5A225AB20F7E2D700AF2394 /* WeekViewViewModel.swift in Sources */,
 				CC89B4391D9FE3D0006BFD6E /* RootViewController.swift in Sources */,
 				CC89B44C1D9FEB73006BFD6E /* JSONDecodable.swift in Sources */,
 				CC89B4451D9FE897006BFD6E /* DataManager.swift in Sources */,

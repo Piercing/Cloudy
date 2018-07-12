@@ -13,28 +13,31 @@ protocol WeekViewControllerDelegate {
 }
 
 class WeekViewController: WeatherViewController {
-
+    
     // MARK: - Properties
-
+    
     @IBOutlet var tableView: UITableView!
-
+    
     // MARK: -
-
+    
     var delegate: WeekViewControllerDelegate?
     
     // MARK: -
-
+    
     // Este controlador adolece de  los mismos problemas que "DayViewController".
     // Mantiene una fuerte referencia al array de objetos "WeatherDayData" y los
     // utiliza para poblar la "tableView". Referencia al modelo "WeatherDayData".
-    var week: [WeatherDayData]? {
+    
+    // Sustituimos la propiedad "week" por por una propiedad llamada "viewModel"
+    // de tipo "WeekViewViewModel?" que es el VM que corresponde traele los data.
+    var viewModel: WeekViewViewModel? {
         didSet {
             updateView()
         }
     }
-
+    
     // MARK: -
-
+    
     // Encontramos también algunas propiedades de tipo "DateFormatter" para
     // dar formato a los datos del modelo  que se muestran en la table View.
     // Si utilizamos el patrón MVVM, podemos limpiar esto también. Cada vez
@@ -44,75 +47,74 @@ class WeekViewController: WeatherViewController {
         dateFormatter.dateFormat = "EEEE"
         return dateFormatter
     }()
-
+    
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d"
         return dateFormatter
     }()
-
+    
     // MARK: - View Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupView()
     }
-
+    
     // MARK: - Public Interface
-
+    
     override func reloadData() {
         updateView()
     }
     
     // MARK: - View Methods
-
+    
     private func setupView() {
         setupTableView()
         setupRefreshControl()
     }
-
+    
     private func updateView() {
         activityIndicatorView.stopAnimating()
         tableView.refreshControl?.endRefreshing()
-
-        if let week = week {
-            updateWeatherDataContainer(withWeatherData: week)
-
+        
+        if let _ = viewModel {
+            updateWeatherDataContainer()
+            
         } else {
             messageLabel.isHidden = false
             messageLabel.text = "Cloudy was unable to fetch weather data."
-            
         }
     }
-
+    
     // MARK: -
-
+    
     private func setupTableView() {
         tableView.separatorInset = UIEdgeInsets.zero
     }
-
+    
     private func setupRefreshControl() {
         // Initialize Refresh Control
         let refreshControl = UIRefreshControl()
-
+        
         // Configure Refresh Control
         refreshControl.addTarget(self, action: #selector(WeekViewController.didRefresh(sender:)), for: .valueChanged)
-
+        
         // Update Table View)
         tableView.refreshControl = refreshControl
     }
-
+    
     // MARK: -
-
-    private func updateWeatherDataContainer(withWeatherData weatherData: [WeatherDayData]) {
+    
+    private func updateWeatherDataContainer() {
         weatherDataContainer.isHidden = false
-
+        
         tableView.reloadData()
     }
-
+    
     // MARK: - Actions
-
+    
     @objc func didRefresh(sender: UIRefreshControl) {
         delegate?.controllerDidRefresh(controller: self)
     }
@@ -120,56 +122,33 @@ class WeekViewController: WeatherViewController {
 }
 
 extension WeekViewController: UITableViewDataSource {
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return week == nil ? 0 : 1
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.numberOfSections
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let week = week else { return 0 }
-        return week.count
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.numberOfDays
     }
-
+    
     
     // En este  método de la "tableView", una instancia de "WeatherDayData" se  obtiene del array y
     // son usados y además, los valores brutos del modelo de datos se transforman y son formateados
     // antes de que sean mostrados al usuario.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WeatherDayTableViewCell.reuseIdentifier, for: indexPath) as? WeatherDayTableViewCell else { fatalError("Unexpected Table View Cell") }
-
-        if let week = week { // --> Aquí se accede al modelo de datos obteniendo una instancia de "WeatherDayData", típico de MVC.
-            // Fetch Weather Data.
-            let weatherData = week[indexPath.row]
-
-            var windSpeed = weatherData.windSpeed
-            var temperatureMin = weatherData.temperatureMin
-            var temperatureMax = weatherData.temperatureMax
-
-            if UserDefaults.temperatureNotation() != .fahrenheit {
-                temperatureMin = temperatureMin.toCelcius()
-                temperatureMax = temperatureMax.toCelcius()
-            }
-
+        
+        if let viewModel = viewModel { // --> Aquí se accede al modelo de datos a través de su VM.
+            
             // Configure Cell
-            cell.dayLabel.text = dayFormatter.string(from: weatherData.time)
-            cell.dateLabel.text = dateFormatter.string(from: weatherData.time)
-
-            let min = String(format: "%.0f°", temperatureMin)
-            let max = String(format: "%.0f°", temperatureMax)
-
-            cell.temperatureLabel.text = "\(min) - \(max)"
-
-            if UserDefaults.unitsNotation() != .imperial {
-                windSpeed = windSpeed.toKPH()
-                cell.windSpeedLabel.text = String(format: "%.f KPH", windSpeed)
-            } else {
-                cell.windSpeedLabel.text = String(format: "%.f MPH", windSpeed)
-            }
-
-            cell.iconImageView.image = imageForIcon(withName: weatherData.icon)
+            cell.temperatureLabel.text  = viewModel.temperature(for: indexPath.row)
+            cell.windSpeedLabel.text    = viewModel.windSpeed(for: indexPath.row)
+            cell.iconImageView.image    = viewModel.image(for: indexPath.row)
+            cell.dateLabel.text         = viewModel.date(for: indexPath.row)
+            cell.dayLabel.text          = viewModel.day(for: indexPath.row)
         }
-
         return cell
     }
-
 }
